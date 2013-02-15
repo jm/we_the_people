@@ -23,7 +23,8 @@ Now you're ready to start asking for resources.  Here are a few example calls:
 
 >> petitions = WeThePeople::Resources::Petition.all
 >> petition2 = petitions.first
->> petition.signatures.all
+# Not yet implemented in the API (signatures)...
+>> petition2.signatures.all.first.city
 # => "Orlando"
 ```
 
