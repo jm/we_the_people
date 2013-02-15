@@ -1,69 +1,45 @@
-RakeGem
-=======
+# WeThePeople
 
-# DESCRIPTION
+`we_the_people` is a gem to access the new [We The People](https://petitions.whitehouse.gov) petitions API.
 
-Ever wanted to manage your RubyGem in a sane way without having to resort to
-external dependencies like Jeweler or Hoe? Ever thought that Rake and a hand
-crafted gemspec should be enough to deal with these problems? If so, then
-RakeGem is here to make your life awesome!
+# Quickstart
 
-RakeGem is not a library. It is just a few simple file templates that you can
-copy into your project and easily customize to match your specific needs. It
-ships with a few Rake tasks to help you keep your gemspec up-to-date, build
-a gem, and release your library and gem to the world.
+First, you'll need to configure your API key:
 
-RakeGem assumes you are using Git. This makes the Rake tasks easy to write. If
-you are using something else, you should be able to get RakeGem up and running
-with your system without too much editing.
+```ruby
+WeThePeople.api_key = "1234abcd"
+```
 
-The RakeGem tasks were inspired by the
-[Sinatra](http://github.com/sinatra/sinatra) project.
+Now you're ready to start asking for resources.  Here are a few example calls:
 
-# INSTALLATION
+```ruby
+>> petition = WeThePeople::Resources::Petition.find("1234")
+>> petition.body
+# => "Example body"
+>> petition.title
+# => "My Example Petition"
+>> petition.issues.first.name
+# => "Civil Rights"
 
-Take a look at `Rakefile` and `NAME.gemspec`. For new projects, you can start
-with these files and edit a few lines to make them fit into your library. If
-you have an existing project, you'll probably want to take the RakeGem
-versions and copy any custom stuff from your existing Rakefile and gemspec
-into them. As long as you're careful, the rake tasks should keep working.
+>> petitions = WeThePeople::Resources::Petition.all
+>> petition2 = petitions.first
+>> petition.signatures.all
+# => "Orlando"
+```
 
-# ASSUMPTIONS
+# Configuration
 
-RakeGem makes a few assumptions. You will either need to satisfy these
-assumptions or modify the rake tasks to work with your setup.
+You can configure a few options on the `WeThePeople` module:
 
-You should have a file named `lib/NAME.rb` (where NAME is the name of your
-library) that contains a version line. It should look something like this:
+* `api_key` - Required to make any calls; your We The People API key.
+* `default_page_size` - The page size to request by default for all resources.
+* `client` - If you don't want to use `rest-client` you can substitute in another HTTP client object that conforms to the same API here.
+* `mock` - If set to "1", all requests will return mock results.
 
-    module NAME
-      VERSION = '0.1.0'
-    end
+# Contributing
 
-It is important that you use the constant `VERSION` and that it appear on a
-line by itself.
+Hack some code, make a pull request.  I'll review it and merge it in!  Need some ideas as to where to get started?  Here are a few:
 
-# UPDATING THE VERSION
-
-In order to make a new release, you'll want to update the version. With
-RakeGem, you only need to do that in the `lib/NAME.rb` file. Everything else
-will use this find the canonical version of the library.
-
-# TASKS
-
-RakeGem provides three rake tasks:
-
-`rake gemspec` will update your gemspec with the latest version (taken from
-the `lib/NAME.rb` file) and file list (as reported by `git ls-files`).
-
-`rake build` will update your gemspec, build your gemspec into a gem, and
-place it in the `pkg` directory.
-
-`rake release` will update your gemspec, build your gem, make a commit with
-the message `Release 0.1.0` (with the correct version, obviously), tag the
-commit with `v0.1.0` (again with the correct version), and push the `master`
-branch and new tag to `origin`.
-
-Keep in mind that these are just simple Rake tasks and you can edit them
-however you please. Don't want to auto-commit or auto-push? Just delete those
-lines. You can bend RakeGem to your own needs. That's the whole point!
+* Tests.  Please?
+* Make resources be able to be related + associated.  It looks like responses may end up going this route.
+* Documentationages.
