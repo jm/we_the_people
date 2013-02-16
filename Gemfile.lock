@@ -2,14 +2,19 @@ PATH
   remote: .
   specs:
     we_the_people (0.0.1)
+      active_support
       json
       rest-client
 
 GEM
   remote: http://rubygems.org/
   specs:
+    active_support (3.0.0)
+      activesupport (= 3.0.0)
+    activesupport (3.0.0)
     json (1.7.7)
     mime-types (1.21)
+    rake (0.9.2.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
 
@@ -17,4 +22,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  rake
   we_the_people!
