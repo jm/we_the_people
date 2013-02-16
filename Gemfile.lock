@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    we_the_people (0.0.1)
+      json
+      rest-client
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    json (1.7.7)
+    mime-types (1.21)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  we_the_people!
