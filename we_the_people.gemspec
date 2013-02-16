@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
-  s.add_dependency('rest_client')
+  s.add_dependency('rest-client')
   s.add_dependency('json')
 
   ## Leave this section as-is. It will be automatically generated from the
