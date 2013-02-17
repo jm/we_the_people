@@ -51,10 +51,6 @@ module WeThePeople
         "#{WeThePeople.host}/#{path(parent)}.json"
       end
 
-      def build_query_string(hash)
-        hash.to_query
-      end
-
       def belongs_to(klass_name)
         @belongs_to = klass_name
 
