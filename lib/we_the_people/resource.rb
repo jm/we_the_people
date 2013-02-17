@@ -5,10 +5,6 @@ module WeThePeople
     class <<self
       attr_reader :embedded_attributes, :embedded_array_attributes, :attributes
 
-      def bare_name
-        name.split("::").last
-      end
-
       def find(id, parent = nil)
         raise "Must be called by parent." if @belongs_to && parent.nil?
 
@@ -18,11 +14,11 @@ module WeThePeople
 
       def path(parent = nil)
         raise "Must be called by parent." if @belongs_to && parent.nil?
-
+        bare_name =  name.split("::").last.underscore.pluralize
         if parent
-          "#{parent.path}/#{bare_name.underscore.pluralize}"
+          "#{parent.path}/#{bare_name}"
         else
-          "#{bare_name.underscore.pluralize}"
+          "#{bare_name}"
         end
       end
 
