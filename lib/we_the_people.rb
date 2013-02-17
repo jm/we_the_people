@@ -32,7 +32,7 @@ module WeThePeople
     end
 
     def host
-      "http://petitions.whitehouse.gov/api/v1"
+      "https://petitions.whitehouse.gov/api/v1"
     end
 
     attr_accessor :api_key
@@ -48,3 +48,4 @@ module WeThePeople
     attr_accessor :mock
   end
 end
+
