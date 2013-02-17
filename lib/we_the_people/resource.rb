@@ -41,13 +41,13 @@ module WeThePeople
       def all(parent = nil, criteria = {})
         ensure_parent_access parent
 
-        url = build_fully_qualified_url(parent, criteria)
+        url = build_index_url(parent, criteria)
         params = criteria.merge(WeThePeople.default_params)
         response = api_call(url, params)
         Collection.new(self, criteria, response)
       end
 
-      def build_fully_qualified_url(parent = nil, criteria = {})
+      def build_index_url(parent = nil, criteria = {})
         "#{WeThePeople.host}/#{path(parent)}.json"
       end
 

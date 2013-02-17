@@ -22,7 +22,7 @@ describe WeThePeople::Resource, "WeThePeople Generic Resources" do
   %w{petition user}.each do |resource|
 
     it "can build the correct fully qualified URL" do
-      get_constant(resource).build_fully_qualified_url.should
+      get_constant(resource).build_index_url.should
       eq "http://petitions.whitehouse.gov/api/v1/#{resource.pluralize}.json"
     end
 
