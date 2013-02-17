@@ -33,14 +33,16 @@ module WeThePeople
       def all(parent = nil, criteria = {})
         raise "Must be called by parent." if @belongs_to && parent.nil?
 
-        json = WeThePeople.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople.default_params)).to_s
+        url = build_fully_qualified_url(parent, criteria)
+        params = criteria.merge(WeThePeople.default_params)
+
+        puts "URL: #{url} PARAMETERS:#{params.inspect}"
+        json = WeThePeople.client.get(url, :params => params).to_s
         Collection.new(self, criteria, JSON.parse(json))
       end
 
-      def build_index_url(parent = nil, criteria = {})
-        u = "#{WeThePeople.host}/#{path(parent)}.json"
-        puts u
-        u
+      def build_fully_qualified_url(parent = nil, criteria = {})
+        "#{WeThePeople.host}/#{path(parent)}.json"
       end
 
       def build_query_string(hash)
