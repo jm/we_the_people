@@ -1,3 +1,5 @@
+require 'json'
+
 module WeThePeople
   class Resource
     class <<self

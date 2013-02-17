@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__))
 
-require 'json'
 require 'rest_client'
+
 require 'active_support/inflector'
 require 'active_support/core_ext/hash'
 
