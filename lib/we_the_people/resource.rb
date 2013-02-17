@@ -5,15 +5,27 @@ module WeThePeople
     class <<self
       attr_reader :embedded_attributes, :embedded_array_attributes, :attributes
 
-      def find(id, parent = nil)
+      def ensure_parent_access(parent)
         raise "Must be called by parent." if @belongs_to && parent.nil?
+      end
 
-        json = WeThePeople.client.get(build_resource_url(id, parent), :params => WeThePeople.default_params).to_s
-        new(JSON.parse(json)['results'].first)
+      def api_call(url, params)
+        puts "URL: #{url} PARAMETERS:#{params.inspect}"
+        JSON.parse(WeThePeople.client.get(url, :params => params).to_s)
+      end
+
+      def find(id, parent = nil)
+        ensure_parent_access parent
+
+        url = build_resource_url(id, parent)
+        params = WeThePeople.default_params
+        response = api_call(url, params)
+        new(response['results'].first)
       end
 
       def path(parent = nil)
-        raise "Must be called by parent." if @belongs_to && parent.nil?
+        ensure_parent_access parent
+
         bare_name =  name.split("::").last.underscore.pluralize
         if parent
           "#{parent.path}/#{bare_name}"
@@ -27,14 +39,12 @@ module WeThePeople
       end
 
       def all(parent = nil, criteria = {})
-        raise "Must be called by parent." if @belongs_to && parent.nil?
+        ensure_parent_access parent
 
         url = build_fully_qualified_url(parent, criteria)
         params = criteria.merge(WeThePeople.default_params)
-
-        puts "URL: #{url} PARAMETERS:#{params.inspect}"
-        json = WeThePeople.client.get(url, :params => params).to_s
-        Collection.new(self, criteria, JSON.parse(json))
+        response = api_call(url, params)
+        Collection.new(self, criteria, response)
       end
 
       def build_fully_qualified_url(parent = nil, criteria = {})
