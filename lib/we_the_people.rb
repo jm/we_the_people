@@ -14,6 +14,8 @@ require 'we_the_people/resources/petition'
 require 'we_the_people/resources/issue'
 require 'we_the_people/resources/response'
 require 'we_the_people/resources/signature'
+require 'we_the_people/resources/location'
+require 'we_the_people/resources/user'
 
 module WeThePeople
   VERSION = '0.0.1'
