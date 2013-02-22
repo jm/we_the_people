@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'we_the_people'
   s.version           = '0.0.1'
-  s.date              = '2013-02-15'
+  s.date              = '2013-02-16'
   s.rubyforge_project = 'we_the_people'
 
   ## Make sure your summary is short. The description may be as long
@@ -42,16 +42,33 @@ Gem::Specification.new do |s|
   ## that are needed for an end user to actually USE your code.
   s.add_dependency('rest-client')
   s.add_dependency('json')
+  s.add_dependency('active_support')
+
+  s.add_development_dependency('rake')
+  s.add_development_dependency('rspec')
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
+    Gemfile
+    Gemfile.lock
     LICENSE
-    NAME.gemspec
     README.md
     Rakefile
+    lib/we_the_people.rb
+    lib/we_the_people/association_proxy.rb
+    lib/we_the_people/collection.rb
+    lib/we_the_people/embedded_resource.rb
+    lib/we_the_people/resource.rb
+    lib/we_the_people/resources/issue.rb
+    lib/we_the_people/resources/location.rb
+    lib/we_the_people/resources/petition.rb
+    lib/we_the_people/resources/response.rb
+    lib/we_the_people/resources/signature.rb
+    lib/we_the_people/resources/user.rb
+    we_the_people.gemspec
   ]
   # = MANIFEST =
 

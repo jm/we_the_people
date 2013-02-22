@@ -1,7 +1,7 @@
 $:.unshift(File.dirname(__FILE__))
 
-require 'json'
 require 'rest_client'
+
 require 'active_support/inflector'
 require 'active_support/core_ext/hash'
 
@@ -14,6 +14,8 @@ require 'we_the_people/resources/petition'
 require 'we_the_people/resources/issue'
 require 'we_the_people/resources/response'
 require 'we_the_people/resources/signature'
+require 'we_the_people/resources/location'
+require 'we_the_people/resources/user'
 
 module WeThePeople
   VERSION = '0.0.1'
@@ -30,7 +32,7 @@ module WeThePeople
     end
 
     def host
-      "http://petitions.whitehouse.gov/api/v1"
+      "https://petitions.whitehouse.gov/api/v1"
     end
 
     attr_accessor :api_key
@@ -46,3 +48,4 @@ module WeThePeople
     attr_accessor :mock
   end
 end
+

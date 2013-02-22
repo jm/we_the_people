@@ -1,26 +1,36 @@
+require 'json'
+
 module WeThePeople
   class Resource
     class <<self
       attr_reader :embedded_attributes, :embedded_array_attributes, :attributes
 
-      def bare_name
-        name.split("::").last
+      def ensure_parent_access(parent)
+        raise "Must be called by parent." if @belongs_to && parent.nil?
+      end
+
+      def api_call(url, params)
+        puts "URL: #{url} PARAMETERS:#{params.inspect}"
+        JSON.parse(WeThePeople.client.get(url, :params => params).to_s)
       end
 
       def find(id, parent = nil)
-        raise "Must be called by parent." if @belongs_to && parent.nil?
+        ensure_parent_access parent
 
-        json = WeThePeople.client.get(build_resource_url(id, parent), :params => WeThePeople.default_params).to_s
-        new(JSON.parse(json)['results'].first)
+        url = build_resource_url(id, parent)
+        params = WeThePeople.default_params
+        response = api_call(url, params)
+        new(response['results'].first)
       end
 
       def path(parent = nil)
-        raise "Must be called by parent." if @belongs_to && parent.nil?
+        ensure_parent_access parent
 
+        bare_name =  name.split("::").last.underscore.pluralize
         if parent
-          "#{parent.path}/#{bare_name.underscore.pluralize}"
+          "#{parent.path}/#{bare_name}"
         else
-          "#{bare_name.underscore.pluralize}"
+          "#{bare_name}"
         end
       end
 
@@ -29,20 +39,16 @@ module WeThePeople
       end
 
       def all(parent = nil, criteria = {})
-        raise "Must be called by parent." if @belongs_to && parent.nil?
+        ensure_parent_access parent
 
-        json = WeThePeople.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople.default_params)).to_s
-        Collection.new(self, criteria, JSON.parse(json))
+        url = build_index_url(parent, criteria)
+        params = criteria.merge(WeThePeople.default_params)
+        response = api_call(url, params)
+        Collection.new(self, criteria, response)
       end
 
       def build_index_url(parent = nil, criteria = {})
-        u = "#{WeThePeople.host}/#{path(parent)}.json"
-        puts u
-        u
-      end
-
-      def build_query_string(hash)
-        hash.to_query
+        "#{WeThePeople.host}/#{path(parent)}.json"
       end
 
       def belongs_to(klass_name)
