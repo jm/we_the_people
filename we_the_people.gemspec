@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'we_the_people'
-  s.version           = '0.0.1'
-  s.date              = '2013-02-15'
+  s.version           = '0.0.2'
+  s.date              = '2013-02-22'
   s.rubyforge_project = 'we_the_people'
 
   ## Make sure your summary is short. The description may be as long
@@ -49,10 +49,24 @@ Gem::Specification.new do |s|
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
+    Gemfile
+    Gemfile.lock
     LICENSE
-    NAME.gemspec
     README.md
     Rakefile
+    lib/we_the_people.rb
+    lib/we_the_people/association_proxy.rb
+    lib/we_the_people/collection.rb
+    lib/we_the_people/embedded_resource.rb
+    lib/we_the_people/resource.rb
+    lib/we_the_people/resources/issue.rb
+    lib/we_the_people/resources/location.rb
+    lib/we_the_people/resources/petition.rb
+    lib/we_the_people/resources/response.rb
+    lib/we_the_people/resources/signature.rb
+    lib/we_the_people/resources/user.rb
+    lib/we_the_people/simple.rb
+    we_the_people.gemspec
   ]
   # = MANIFEST =
 
