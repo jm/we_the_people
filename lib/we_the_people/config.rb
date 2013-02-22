@@ -9,14 +9,28 @@ module WeThePeople
       end
 
       def self.get(url, args = {})
-        url_string = ("http://myapp.com/api.json").stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        url_string = ("#{url}?#{make_query_string(args[:params] || {})}").stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         url = NSURL.URLWithString(url_string)
         request = NSURLRequest.requestWithURL(url)
         response = nil
         error = nil
         data = NSURLConnection.sendSynchronousRequest(request, returningResponse: response, error: error)
-        raise "BOOM!" unless (data.length > 0 && error.nil?)
-        json = NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
+        
+        NSString.alloc.initWithData(data, encoding: NSUTF8StringEncoding)
+      end
+
+      def self.make_query_string(hash)
+        hash.collect do |key, value|
+          "#{key}=#{value}"
+        end.sort * '&'
+      end
+    end
+
+    class MotionJSONWrapper
+      def self.parse(string_data)
+        json_data = string_data.dataUsingEncoding(NSUTF8StringEncoding)
+        e = Pointer.new(:object)
+        NSJSONSerialization.JSONObjectWithData(json_data, options:0, error: e).mutableCopy
       end
     end
 
@@ -32,7 +46,7 @@ module WeThePeople
       end
 
       def json
-        in_motion? ? BW::JSON : JSON
+        in_motion? ? MotionJSONWrapper : JSON
       end
 
       def in_motion?
@@ -49,7 +63,7 @@ module WeThePeople
         raise "Set your API key!" unless @api_key
         params = { :key => @api_key }
         params.merge!(:mock => 1) if @mock
-
+        params.merge!(:limit => default_page_size)
         params
       end
 

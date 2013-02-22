@@ -1,7 +1,7 @@
 module WeThePeople
   class Collection
     include Enumerable
-    attr_reader :count, :offset, :limit, :current_page
+    attr_reader :count, :offset, :limit, :current_page, :all
 
     def initialize(klass, conditions, hash, parent = nil)
       @criteria = conditions
@@ -24,12 +24,15 @@ module WeThePeople
     end
 
     def next_page
-      @offset += @limit
-      @all += fetch_current_page
+      @offset += @limit unless @all.empty?
+
+      fetch_current_page
+      $stdout.puts @all.inspect
+      @current_page
     end
 
     def fetch_current_page
-      @current_page = fetch_page(@offset, @limit)
+      fetch_page(@offset, @limit)
     end
 
     def previous_page
@@ -39,7 +42,7 @@ module WeThePeople
       @all.slice(@offset, @limit)
     end
 
-    def all(refresh = false)
+    def get_all(refresh = false)
       if refresh 
         @all = []
         @offset = 0
@@ -69,13 +72,14 @@ module WeThePeople
     end
   private
     def fetch_page(page_offset, page_limit)
-      @klass.fetch(@parent, @criteria.merge(:offset => page_offset, :limit => page_limit))
+      process_results(@klass.fetch(@parent, @criteria.merge(:offset => page_offset, :limit => page_limit))['results'])
     end
 
     def process_results(results)
       @current_page = results.map do |result|
         @klass.new(result)
       end
+      
       @all += @current_page
     end
   end

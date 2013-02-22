@@ -44,13 +44,7 @@ module WeThePeople
       end
 
       def build_index_url(parent = nil, criteria = {})
-        u = "#{WeThePeople::Config.host}/#{path(parent)}.json"
-        puts u
-        u
-      end
-
-      def build_query_string(hash)
-        hash.to_query
+        "#{WeThePeople::Config.host}/#{path(parent)}.json"
       end
 
       def belongs_to(klass_name)
@@ -139,15 +133,21 @@ module WeThePeople
     def initialize(attrs, parent = nil)
       @parent = parent
 
-      attrs.stringify_keys!
-      attrs = attrs.slice(*self.class.attributes)
+      result = {}
+      attrs.each_pair do |key, value|
+        result[key.to_s.gsub(/\s/, '_')] = value
+      end
+      
+      attrs = result.select {|a| self.class.attributes.include?(a)}
 
       self.class.embedded_attributes.each do |embedded_key|
-        attrs[embedded_key] = "WeThePeople::Resources::#{embedded_key.classify}".constantize.new(attrs[embedded_key]) if attrs[embedded_key].present?
+        attrs[embedded_key] = "WeThePeople::Resources::#{embedded_key.classify}".constantize.new(attrs[embedded_key]) if !attrs[embedded_key].nil? && !attrs[embedded_key].empty?
       end if self.class.embedded_attributes
 
       self.class.embedded_array_attributes.each do |embedded_array_key|
         if attrs[embedded_array_key].is_a?(Array)
+          # NOTE: This is to make RubyMotion happy
+          attrs[embedded_array_key] = attrs[embedded_array_key].dup
           attrs[embedded_array_key].map! do |embedded_array_element|
             "WeThePeople::Resources::#{embedded_array_key.classify}".constantize.new(embedded_array_element)
           end
