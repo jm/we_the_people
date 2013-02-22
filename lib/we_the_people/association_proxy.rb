@@ -10,11 +10,11 @@ module WeThePeople
     end
 
     def cursor(criteria = {})
-      @klass.cursor(@parent, criteria)
+      @cursor ||= @klass.cursor(@parent, criteria)
     end
 
-    def all(criteria)
-      cursor(criteria).all
-    end
+    delegate :all, :to => :cursor
+    delegate :length, :to => :cursor
+    delegate :first, :to => :cursor
   end
 end

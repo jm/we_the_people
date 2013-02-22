@@ -4,6 +4,7 @@ require 'json'
 require 'rest_client'
 require 'active_support/inflector'
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/module/delegation'
 
 require 'we_the_people/resource'
 require 'we_the_people/embedded_resource'
@@ -18,7 +19,7 @@ require 'we_the_people/resources/location'
 require 'we_the_people/resources/user'
 
 module WeThePeople
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
 
   class <<self
     attr_writer :default_page_size
