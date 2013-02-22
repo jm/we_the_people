@@ -14,6 +14,8 @@ require 'we_the_people/resources/petition'
 require 'we_the_people/resources/issue'
 require 'we_the_people/resources/response'
 require 'we_the_people/resources/signature'
+require 'we_the_people/resources/location'
+require 'we_the_people/resources/user'
 
 module WeThePeople
   VERSION = '0.0.1'
@@ -21,7 +23,7 @@ module WeThePeople
   class <<self
     attr_writer :default_page_size
     def default_page_size
-      @default_page_size ||= 100
+      @default_page_size ||= 1000
     end
 
     attr_writer :client

@@ -1,11 +1,12 @@
 module WeThePeople
   class Collection
     include Enumerable
-    attr_reader :count, :offset, :limit, :all
+    attr_reader :count, :offset, :limit, :current_page
 
-    def initialize(klass, conditions, hash)
+    def initialize(klass, conditions, hash, parent = nil)
       @criteria = conditions
-
+      @parent = parent
+      
       if hash['metadata']['resultset']
         @count = hash['metadata']['resultset']['count'].to_i
         @offset = hash['metadata']['resultset']['offset'].to_i
@@ -15,38 +16,67 @@ module WeThePeople
         @offset = 0
         @limit = WeThePeople.default_page_size
       end
-      
+
       @klass = klass
 
+      @all = []
       process_results(hash['results'])
-    end
-
-    def process_results(results)
-      @all = results.map do |result|
-        @klass.new(result)
-      end
     end
 
     def next_page
       @offset += @limit
-      get_all
+      @all += fetch_current_page
     end
 
-    def get_all
-      @klass.all(@parent, @criteria.merge(:offset => @offset, :limit => @limit))
+    def fetch_current_page
+      @current_page = fetch_page(@offset, @limit)
     end
 
     def previous_page
       @offset -= @limit
       @offset = 0 if @offset < 0
 
-      get_all
+      @all.slice(@offset, @limit)
     end
+
+    def all(refresh = false)
+      if refresh 
+        @all = []
+        @offset = 0
+      end
+
+      (@offset..@count).step(@limit) do |current_offset|
+        @all += fetch_page(current_offset, @limit)
+      end
+
+      @all
+    end
+
+    def length
+      @count
+    end
+    alias size length
+
+    def page_length
+      @limit
+    end
+    alias page_size page_length
 
     def each
       @all.each do |record|
         yield record
       end
+    end
+  private
+    def fetch_page(page_offset, page_limit)
+      @klass.fetch(@parent, @criteria.merge(:offset => page_offset, :limit => page_limit))
+    end
+
+    def process_results(results)
+      @current_page = results.map do |result|
+        @klass.new(result)
+      end
+      @all += @current_page
     end
   end
 end

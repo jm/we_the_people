@@ -28,11 +28,18 @@ module WeThePeople
         "#{WeThePeople.host}/#{path(parent)}/#{id}.json"
       end
 
-      def all(parent = nil, criteria = {})
+      def fetch(parent = nil, criteria = {})
         raise "Must be called by parent." if @belongs_to && parent.nil?
 
-        json = WeThePeople.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople.default_params)).to_s
-        Collection.new(self, criteria, JSON.parse(json))
+        JSON.parse(WeThePeople.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople.default_params)).to_s)
+      end
+
+      def cursor(parent = nil, criteria = {})
+        Collection.new(self, criteria, fetch(parent, criteria), parent)
+      end
+
+      def all(parent = nil, criteria = {})
+        cursor(parent, criteria).all
       end
 
       def build_index_url(parent = nil, criteria = {})

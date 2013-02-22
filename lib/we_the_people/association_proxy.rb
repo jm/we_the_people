@@ -9,8 +9,12 @@ module WeThePeople
       @klass.find(id, @parent)
     end
 
-    def all(criteria = {})
-      @klass.all(@parent, criteria)
+    def cursor(criteria = {})
+      @klass.cursor(@parent, criteria)
+    end
+
+    def all(criteria)
+      cursor(criteria).all
     end
   end
 end
