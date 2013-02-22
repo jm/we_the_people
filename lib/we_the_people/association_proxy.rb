@@ -13,8 +13,6 @@ module WeThePeople
       @cursor ||= @klass.cursor(@parent, criteria)
     end
 
-    delegate :all, :to => :cursor
-    delegate :length, :to => :cursor
-    delegate :first, :to => :cursor
+    delegate :all, :length, :first, :to => :cursor
   end
 end
