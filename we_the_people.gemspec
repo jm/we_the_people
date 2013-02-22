@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   ## that are needed for an end user to actually USE your code.
   s.add_dependency('rest-client')
   s.add_dependency('json')
-  s.add_dependency('active_support')
+  s.add_dependency('activesupport')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
