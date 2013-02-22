@@ -13,8 +13,12 @@ module WeThePeople
       @cursor ||= @klass.cursor(@parent, criteria)
     end
 
+    def get_all
+      cursor.get_all(false)
+    end
+
     def all
-      cursor.all(refresh = false)
+      cursor.all
     end
 
     def length

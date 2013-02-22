@@ -27,7 +27,6 @@ module WeThePeople
       @offset += @limit unless @all.empty?
 
       fetch_current_page
-      $stdout.puts @all.inspect
       @current_page
     end
 
@@ -79,7 +78,7 @@ module WeThePeople
       @current_page = results.map do |result|
         @klass.new(result)
       end
-      
+
       @all += @current_page
     end
   end
