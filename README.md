@@ -7,7 +7,7 @@
 First, you'll need to configure your API key:
 
 ```ruby
-WeThePeople.api_key = "1234abcd"
+WeThePeople::Config.api_key = "1234abcd"
 ```
 
 Now you're ready to start asking for resources.  Here are a few example calls:

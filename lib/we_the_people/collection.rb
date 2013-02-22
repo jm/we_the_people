@@ -12,9 +12,9 @@ module WeThePeople
         @offset = hash['metadata']['resultset']['offset'].to_i
         @limit = hash['metadata']['resultset']['limit'].to_i
       else
-        @count = WeThePeople.default_page_size
+        @count = WeThePeople::Config.default_page_size
         @offset = 0
-        @limit = WeThePeople.default_page_size
+        @limit = WeThePeople::Config.default_page_size
       end
 
       @klass = klass

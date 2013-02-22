@@ -10,8 +10,8 @@ module WeThePeople
       def find(id, parent = nil)
         raise "Must be called by parent." if @belongs_to && parent.nil?
 
-        json = WeThePeople.client.get(build_resource_url(id, parent), :params => WeThePeople.default_params).to_s
-        new(JSON.parse(json)['results'].first)
+        json = WeThePeople::Config.client.get(build_resource_url(id, parent), :params => WeThePeople::Config.default_params).to_s
+        new(WeThePeople::Config.json.parse(json)['results'].first)
       end
 
       def path(parent = nil)
@@ -25,13 +25,14 @@ module WeThePeople
       end
 
       def build_resource_url(id, parent = nil)
-        "#{WeThePeople.host}/#{path(parent)}/#{id}.json"
+        "#{WeThePeople::Config.host}/#{path(parent)}/#{id}.json"
       end
 
       def fetch(parent = nil, criteria = {})
         raise "Must be called by parent." if @belongs_to && parent.nil?
 
-        JSON.parse(WeThePeople.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople.default_params)).to_s)
+        body = WeThePeople::Config.client.get(build_index_url(parent, criteria), :params => criteria.merge(WeThePeople::Config.default_params)).to_s
+        WeThePeople::Config.json.parse(body)
       end
 
       def cursor(parent = nil, criteria = {})
@@ -43,7 +44,7 @@ module WeThePeople
       end
 
       def build_index_url(parent = nil, criteria = {})
-        u = "#{WeThePeople.host}/#{path(parent)}.json"
+        u = "#{WeThePeople::Config.host}/#{path(parent)}.json"
         puts u
         u
       end

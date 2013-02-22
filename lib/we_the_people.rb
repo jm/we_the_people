@@ -6,6 +6,7 @@ require 'active_support/inflector'
 require 'active_support/core_ext/hash'
 require 'active_support/core_ext/module/delegation'
 
+require 'we_the_people/config'
 require 'we_the_people/resource'
 require 'we_the_people/embedded_resource'
 require 'we_the_people/association_proxy'
@@ -18,34 +19,25 @@ require 'we_the_people/resources/signature'
 require 'we_the_people/resources/location'
 require 'we_the_people/resources/user'
 
+if defined?(Motion::Project::Config)  
+  Motion::Project::App.setup do |app|
+    # Borrowed from the teacup gem
+    insert_point = 0
+    app.files.each_index do |index|
+      file = app.files[index]
+      if file =~ /^(?:\.\/)?app\//
+        # found app/, so stop looking
+        break
+      end
+      insert_point = index + 1
+    end
+
+    Dir.glob(File.join(File.dirname(__FILE__), 'we_the_people/**/*.rb')).reverse.each do |file|
+      app.files.insert(insert_point, file)
+    end
+  end
+end
+
 module WeThePeople
   VERSION = '0.0.2'
-
-  class <<self
-    attr_writer :default_page_size
-    def default_page_size
-      @default_page_size ||= 1000
-    end
-
-    attr_writer :client
-    def client
-      @client ||= RestClient
-    end
-
-    def host
-      "http://petitions.whitehouse.gov/api/v1"
-    end
-
-    attr_accessor :api_key
-
-    def default_params
-      raise "Set your API key!" unless @api_key
-      params = { :key => @api_key }
-      params.merge!(:mock => 1) if @mock
-
-      params
-    end
-
-    attr_accessor :mock
-  end
 end

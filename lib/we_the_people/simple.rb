@@ -26,12 +26,12 @@ module WeThePeople
       end
 
       def url(path)
-        "#{WeThePeople.host}/#{path}"
+        "#{WeThePeople::Config.host}/#{path}"
       end
 
       def get(path, params = {})
-        response = WeThePeople.client.get(url(path), :params => params.merge(WeThePeople.default_params))
-        JSON.parse(response.body)['results']
+        response = WeThePeople::Config.client.get(url(path), :params => params.merge(WeThePeople::Config.default_params))
+        WeThePeople::Config.json.parse(response.body)['results']
       end
     end
   end
