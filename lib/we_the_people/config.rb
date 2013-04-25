@@ -54,7 +54,7 @@ module WeThePeople
       end
 
       def host
-        "http://petitions.whitehouse.gov/api/v1"
+        "http://api.whitehouse.gov/v1"
       end
 
       attr_accessor :api_key
