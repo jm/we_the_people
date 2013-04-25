@@ -60,7 +60,6 @@ module WeThePeople
       attr_accessor :api_key
 
       def default_params
-        raise "Set your API key!" unless @api_key
         params = { :key => @api_key }
         params.merge!(:mock => 1) if @mock
         params.merge!(:limit => default_page_size)
