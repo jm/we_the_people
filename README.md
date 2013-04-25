@@ -4,13 +4,7 @@
 
 # Quickstart
 
-First, you'll need to configure your API key:
-
-```ruby
-WeThePeople::Config.api_key = "1234abcd"
-```
-
-Now you're ready to start asking for resources.  Here are a few example calls:
+Here are a few example calls:
 
 ```ruby
 >> petition = WeThePeople::Resources::Petition.find("1234")
@@ -32,7 +26,7 @@ Now you're ready to start asking for resources.  Here are a few example calls:
 
 You can configure a few options on the `WeThePeople` module:
 
-* `api_key` - Required to make any calls; your We The People API key.
+* `api_key` - Your We The People API key (optional).
 * `default_page_size` - The page size to request by default for all resources.
 * `client` - If you don't want to use `rest-client` you can substitute in another HTTP client object that conforms to the same API here.
 * `mock` - If set to "1", all requests will return mock results.
