@@ -6,9 +6,9 @@ module WeThePeople
       attribute :title
       attribute :body
       attribute :status
-      attribute :signature_threshold, Integer
-      attribute :signature_count, Integer
-      attribute :signatures_needed, Integer
+      attribute :signature_threshold, Integer, 'signatureThreshold'
+      attribute :signature_count, Integer, 'signatureCount'
+      attribute :signatures_needed, Integer, 'signaturesNeeded'
       attribute :deadline, Time
       attribute :created, Time
 

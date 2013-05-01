@@ -69,17 +69,18 @@ module WeThePeople
         COERCERS[klass].call(val)
       end
 
-      def attribute(name, coerce_to = nil)
+      def attribute(name, coerce_to = nil, key_name = nil)
         name = name.to_s
-        add_attribute_key(name)
+        key_name ||= name
+        add_attribute_key(key_name)
 
         define_method "#{name}=" do |val|
           val = self.class.coerce_value(val, coerce_to) if coerce_to
-          @attributes[name] = val
+          @attributes[key_name] = val
         end
 
         define_method name do
-          coerce_to ? self.class.coerce_value(@attributes[name], coerce_to) : @attributes[name]
+          coerce_to ? self.class.coerce_value(@attributes[key_name], coerce_to) : @attributes[key_name]
         end
       end
 
