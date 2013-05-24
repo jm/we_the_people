@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe WeThePeople do
-  it "can set the api_key" do
-    WeThePeople.api_key = '123'
+  it "can pull the list of petitions" do
+    petitions = WeThePeople::Resources::Petition.all
+    petitions.count.should > 0
   end
 end
