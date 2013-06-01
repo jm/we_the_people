@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   ## that are needed for an end user to actually USE your code.
   s.add_dependency('rest-client')
   s.add_dependency('json')
-  s.add_dependency('active_support')
+  s.add_dependency('activesupport', '>= 3.0.0')
   
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
