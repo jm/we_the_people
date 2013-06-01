@@ -39,5 +39,5 @@ if defined?(Motion::Project::Config)
 end
 
 module WeThePeople
-  VERSION = '0.0.5'
+  VERSION = '0.0.6'
 end
