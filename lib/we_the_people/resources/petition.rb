@@ -23,7 +23,19 @@ module WeThePeople
       end
 
       def failed?
-        deadline < Time.now && !successful?
+        expired? && !successful?
+      end
+
+      def signatures_needed?
+        signatures_needed > 0
+      end
+
+      def response?
+        !response.nil?
+      end
+
+      def expired?
+        deadline < Time.now
       end
     end
   end
