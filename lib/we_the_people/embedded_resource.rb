@@ -1,4 +1,4 @@
-class Struct
+class EmbeddedResourceObject < Struct
   def self.hash_initialized(*keys)
     klass = Class.new(self.new(*keys))
     keys = keys.map(&:to_s)
@@ -11,8 +11,12 @@ class Struct
     
     klass
   end
+
+  def to_json(_)
+    Hash[self.each_pair.to_a].to_json
+  end
 end
 
 def EmbeddedResource(*keys)
-  Struct.hash_initialized(*keys)
+  EmbeddedResourceObject.hash_initialized(*keys)
 end
